@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>{$lang->mygpconnect_register_title} - {$mybb->settings['bbname']}</title>
+{$headerinclude}
+</head>
+<body>
+ {$header}
+<table width="100%" border="0" align="center">
+<tr>
+	<td valign="top">
+    {$errors}
+		<form action="mygpconnect.php?action=gpregister" method="post">
+			<input type="hidden" name="my_post_key" value="{$mybb->post_code}" />
+			<table border="0" cellspacing="{$theme['borderwidth']}" cellpadding="{$theme['tablespace']}" class="tborder">
+			<thead>
+			<tr>
+				<th class="thead" colspan="2">
+					<strong>{$lang->mygpconnect_register_title}</strong>
+				</th>
+			</tr>
+			</thead>
+			<tbody>
+			<tr>
+				<td class="trow1" width="25%" valign="top">
+					 {$lang->mygpconnect_register_basicinfo}
+				</td>
+				<td class="trow1" valign="top">
+					<table width="100%" border="0" cellspacing="{$theme['borderwidth']}" cellpadding="{$theme['tablespace']}">
+					<tr>
+						<td class="trow1" width="15%">
+							 {$lang->mygpconnect_register_username}
+						</td>
+						<td class="trow1">
+							 {$username}
+						</td>
+					</tr>
+					<tr>
+						<td class="trow2">
+							 {$lang->mygpconnect_register_email}
+						</td>
+						<td class="trow2">
+							 {$email}
+						</td>
+					</tr>
+					</table>
+				</td>
+			</tr>
+			<tr>
+				<td class="trow2" valign="top">
+					 {$lang->mygpconnect_register_whattosync}
+				</td>
+				<td class="trow2" valign="top">
+					<table width="100%" border="0" cellspacing="{$theme['borderwidth']}" cellpadding="{$theme['tablespace']}">
+					 {$options}
+					</table>
+				</td>
+			</tr>
+			</tbody>
+			</table>
+			<div style="text-align:center;">
+				 {$redirectUrl} <input type="submit" value="{$lang->mygpconnect_settings_save}" />
+			</div>
+		</form>
+	</td>
+</tr>
+</table>
+ {$footer}
+</body>
+</html>
