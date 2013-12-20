@@ -757,7 +757,7 @@ function mygpconnect_usercp_menu()
 function mygpconnect_usercp()
 {
 	
-	global $mybb, $lang;
+	global $mybb, $lang, $inlinesuccess;
 	
 	if(!session_id()) session_start();
 
@@ -819,15 +819,7 @@ function mygpconnect_usercp()
 			}
 			// true means only link
 			mygpconnect_run($userdata, true);
-			// inline success support
-			if (function_exists(inline_success)) {
-				$inlinesuccess = inline_success($lang->mygpconnect_success_linked);
-				$mybb->input['action'] = "mygpconnect";
-				// make sure we don't update options when redirecting with inline success (with NULL values)
-				unset($mybb->input['code']);
-			} else {
-				redirect("usercp.php?action=mygpconnect", $lang->mygpconnect_success_linked);
-			}
+			redirect("usercp.php?action=mygpconnect", $lang->mygpconnect_success_linked);
 		} else {
 			error($lang->mygpconnect_error_noauth);
 		}
@@ -851,12 +843,7 @@ function mygpconnect_usercp()
 			// unlinking his gp account... what a pity! :(
 			if ($mybb->input['unlink']) {
 				mygpconnect_unlink($mybb->user['uid']);
-				// inline success support
-				if (function_exists(inline_success)) {
-					$inlinesuccess = inline_success($lang->mygpconnect_success_accunlinked);
-				} else {
-					redirect('usercp.php?action=mygpconnect', $lang->mygpconnect_success_accunlinked, $lang->mygpconnect_success_accunlinked_title);
-				}
+				redirect('usercp.php?action=mygpconnect', $lang->mygpconnect_success_accunlinked, $lang->mygpconnect_success_accunlinked_title);
 			} else {						
 				$settings = array();
 				
@@ -897,12 +884,7 @@ function mygpconnect_usercp()
 					
 					// we don't need gp_isloggingin anymore
 					unset($_SESSION['gp_isloggingin']);
-					// inline success support
-					if (function_exists(inline_success)) {
-						$inlinesuccess = inline_success($lang->mygpconnect_success_settingsupdated);
-					} else {
-						redirect('usercp.php?action=mygpconnect', $lang->mygpconnect_success_settingsupdated, $lang->mygpconnect_success_settingsupdated_title);
-					}
+					redirect('usercp.php?action=mygpconnect', $lang->mygpconnect_success_settingsupdated, $lang->mygpconnect_success_settingsupdated_title);
 				}
 			}
 		}
