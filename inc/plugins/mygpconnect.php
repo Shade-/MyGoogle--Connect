@@ -407,6 +407,10 @@ function mygpconnect_sync($user, $gpdata = array(), $bypass = false)
 	
 	global $mybb, $db, $session, $lang, $plugins;
 	
+	if(!$lang->mygpconnect) {
+		$lang->load("mygpconnect");
+	}
+	
 	$userData = array();
 	$userfieldsData = array();
 	
@@ -460,10 +464,9 @@ function mygpconnect_sync($user, $gpdata = array(), $bypass = false)
 	if ((($user['gpsex'] AND !empty($gpdata['gender'])) OR $bypass) AND $mybb->settings['mygpconnect_gpsex']) {
 		if ($db->field_exists($sexid, "userfields")) {
 			if ($gpdata['gender'] == "male") {
-				// italian fillings... 5h17! workaround needed!
-				$userfieldsData[$sexid] = "Uomo";
+				$userfieldsData[$sexid] = $lang->mygpconnect_male;
 			} elseif ($gpdata['gender'] == "female") {
-				$userfieldsData[$sexid] = "Donna";
+				$userfieldsData[$sexid] = $lang->mygpconnect_female;
 			}
 		}
 	}

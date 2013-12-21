@@ -49,3 +49,7 @@ $l['mygpconnect_success_accunlinked_title'] = "Account unlinked";
 // who's online
 $l['mygpconnect_viewing_loggingin'] = "<a href=\"mygpconnect.php?action=gplogin\">Logging in with Google+</a>";
 $l['mygpconnect_viewing_registering'] = "<a href=\"mygpconnect.php?action=gpregister\">Registering with Google+</a>";
+
+// others
+$l['mygpconnect_male'] = "Male";
+$l['mygpconnect_female'] = "Female";
