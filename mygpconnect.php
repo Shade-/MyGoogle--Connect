@@ -69,7 +69,7 @@ if ($mybb->input['action'] == 'do_login') {
 	
 		$user = $GoogleConnect->get_user();
 		
-		$GoogleConnect->process($user);
+		$process = $GoogleConnect->process($user);
 		
 		if ($process['error']) {
 		

@@ -426,19 +426,28 @@ function mygpconnect_usercp()
 						$settings[$setting] = 1;
 					}
 					
-					// Build a list of parameters to include in the fallback URL
-					$loginUrlExtra .= "&{$setting}=" . $settings[$setting];
+				}
+				
+				if ($_SESSION['gplogin']) {
+				
+					$settings = $_SESSION['gpsettings'];
+					
+					unset($_SESSION['gplogin'], $_SESSION['gpsettings']);
+				
+					$GoogleConnect->set_fallback("usercp.php?action=mygpconnect");
+					$GoogleConnect->obtain_tokens();
 					
 				}
 				
-				$user = $GoogleConnect->get_user();
-				
-				if (!$user) {
+				if (!$GoogleConnect->check_user()) {
 				
 					// Store a token in the session, we will check for it in the next call
 					$_SESSION['gplogin'] = true;
 					
-					$GoogleConnect->set_fallback("/usercp.php?action=mygpconnect" . $loginUrlExtra);
+					// We can't store it in the fallback URL because Google wants it to match the ones specified in their Dev Console... we ain't got time for that
+					$_SESSION['gpsettings'] = $settings;
+					
+					$GoogleConnect->set_fallback("usercp.php?action=mygpconnect");
 					$GoogleConnect->authenticate();
 					
 					return;
@@ -446,8 +455,6 @@ function mygpconnect_usercp()
 				}
 				
 				if ($db->update_query('users', $settings, 'uid = ' . (int) $mybb->user['uid'])) {
-					
-					unset($_SESSION['gplogin']);
 					
 					$newUser = array_merge($mybb->user, $settings);
 					$GoogleConnect->sync($newUser, $user);
