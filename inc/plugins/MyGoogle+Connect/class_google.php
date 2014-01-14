@@ -253,6 +253,14 @@ class MyGoogle
 			$plength = (int) $mybb->settings['minpasswordlength'];
 		}
 		
+		// No email? Create a fictional one
+		if (!$user['email']) {
+			$email = $user['id'] . '@' . str_replace(' ', '', strtolower($mybb->settings['bbname'])) . '.com';
+		}
+		else {
+			$email = $user['email'];
+		}
+		
 		$password = random_str($plength);
 		
 		$new_user = array(
