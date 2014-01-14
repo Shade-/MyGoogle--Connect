@@ -264,11 +264,11 @@ class MyGoogle
 		$password = random_str($plength);
 		
 		$new_user = array(
-			"username" => $user['name'],
+			"username" => $user['displayName'],
 			"password" => $password,
 			"password2" => $password,
-			"email" => $user['email'],
-			"email2" => $user['email'],
+			"email" => $email,
+			"email2" => $email,
 			"usergroup" => (int) $mybb->settings['mygpconnect_usergroup'],
 			"displaygroup" => (int) $mybb->settings['mygpconnect_usergroup'],
 			"regip" => $session->ipaddress,
