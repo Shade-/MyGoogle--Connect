@@ -1,6 +1,6 @@
 <?php
 /**
- * A bridge begpeen MyBB and Google+, featuring login, registration and more.
+ * A bridge between MyBB and Google+, featuring login, registration and more.
  *
  * @package MyGoogle+ Connect
  * @author  Shade <legend_k@live.it>
@@ -26,7 +26,7 @@ function mygpconnect_info()
 		'authorsite' => 'http://www.idevicelab.net/forum',
 		'version' => '1.0',
 		'compatibility' => '16*',
-		'guid' => ''
+		'guid' => 'cfcca7b3bd3317058eaec5d1b760c0fe'
 	);
 }
 
@@ -289,7 +289,7 @@ if ($settings['mygpconnect_enabled']) {
 function mygpconnect_global()
 {
 	
-	global $mybb, $templatelist;
+	global $mybb, $lang, $templatelist;
 	
 	if ($templatelist) {
 		$templatelist = explode(',', $templatelist);
@@ -316,15 +316,8 @@ function mygpconnect_global()
 	
 	$templatelist = implode(',', array_filter($templatelist));
 	
-}
-
-if ($settings['mygpconnect_enabled']) {
-	$plugins->add_hook('global_start', 'mygpconnect_global');
-	$plugins->add_hook('usercp_menu', 'mygpconnect_usercp_menu', 40);
-	$plugins->add_hook('usercp_start', 'mygpconnect_usercp');
-	$plugins->add_hook("admin_page_output_footer", "mygpconnect_settings_footer");
-	$plugins->add_hook("fetch_wol_activity_end", "mygpconnect_fetch_wol_activity");
-	$plugins->add_hook("build_friendly_wol_location_end", "mygpconnect_build_wol_location");
+	$lang->load('mygpconnect');
+	
 }
 
 function mygpconnect_usercp_menu()
