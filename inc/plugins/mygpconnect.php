@@ -294,6 +294,10 @@ function mygpconnect_global()
 	if ($templatelist) {
 		$templatelist = explode(',', $templatelist);
 	}
+	// Fixes common warnings (due to $templatelist being void)
+	else {
+		$templatelist = array();
+	}
 	
 	if (THIS_SCRIPT == 'mygpconnect.php') {
 	
