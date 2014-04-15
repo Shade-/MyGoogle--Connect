@@ -608,7 +608,7 @@ class MyGoogle
 			
 			if ($db->field_exists($locationid, "userfields")) {
 			
-				foreach($gpdata['placesLived'] as $place) {
+				foreach($data['placesLived'] as $place) {
 				
 					if ($place['primary']) {
 					
@@ -619,7 +619,7 @@ class MyGoogle
 					
 				}
 				
-				$userfield[$locationid] = $db->escape_string($data['placesLived']);
+				$userfield[$locationid] = $db->escape_string($location);
 				
 			}
 			
