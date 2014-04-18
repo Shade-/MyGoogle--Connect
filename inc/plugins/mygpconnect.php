@@ -56,134 +56,134 @@ function mygpconnect_install()
 	
 	$PL or require_once PLUGINLIBRARY;
 	
-	$PL->settings('mygpconnect', $lang->mygpconnect_settings, $lang->mygpconnect_settings_desc, array(
+	$PL->settings('mygpconnect', $lang->setting_group_mygpconnect, $lang->setting_group_mygpconnect_desc, array(
 		'enabled' => array(
-			'title' => $lang->mygpconnect_settings_enable,
-			'description' => $lang->mygpconnect_settings_enable_desc,
+			'title' => $lang->setting_mygpconnect_enable,
+			'description' => $lang->setting_mygpconnect_enable_desc,
 			'value' => '1'
 		),
 		'clientid' => array(
-			'title' => $lang->mygpconnect_settings_clientid,
-			'description' => $lang->mygpconnect_settings_clientid_desc,
+			'title' => $lang->setting_mygpconnect_clientid,
+			'description' => $lang->setting_mygpconnect_clientid_desc,
 			'value' => '',
 			'optionscode' => 'text'
 		),
 		'clientsecret' => array(
-			'title' => $lang->mygpconnect_settings_clientsecret,
-			'description' => $lang->mygpconnect_settings_clientsecret_desc,
+			'title' => $lang->setting_mygpconnect_clientsecret,
+			'description' => $lang->setting_mygpconnect_clientsecret_desc,
 			'value' => '',
 			'optionscode' => 'text'
 		),
 		'apikey' => array(
-			'title' => $lang->mygpconnect_settings_apikey,
-			'description' => $lang->mygpconnect_settings_apikey_desc,
+			'title' => $lang->setting_mygpconnect_apikey,
+			'description' => $lang->setting_mygpconnect_apikey_desc,
 			'value' => '',
 			'optionscode' => 'text'
 		),
 		'emailcheck' => array(
-			'title' => $lang->mygpconnect_settings_emailcheck,
-			'description' => $lang->mygpconnect_settings_emailcheck_desc,
+			'title' => $lang->setting_mygpconnect_emailcheck,
+			'description' => $lang->setting_mygpconnect_emailcheck_desc,
 			'value' => '1'
 		),
 		'fastregistration' => array(
-			'title' => $lang->mygpconnect_settings_fastregistration,
-			'description' => $lang->mygpconnect_settings_fastregistration_desc,
+			'title' => $lang->setting_mygpconnect_fastregistration,
+			'description' => $lang->setting_mygpconnect_fastregistration_desc,
 			'value' => '1'
 		),
 		'usergroup' => array(
-			'title' => $lang->mygpconnect_settings_usergroup,
-			'description' => $lang->mygpconnect_settings_usergroup_desc,
+			'title' => $lang->setting_mygpconnect_usergroup,
+			'description' => $lang->setting_mygpconnect_usergroup_desc,
 			'value' => '2',
 			'optionscode' => 'text'
 		),
 		
 		// PM delivery
 		'passwordpm' => array(
-			'title' => $lang->mygpconnect_settings_passwordpm,
-			'description' => $lang->mygpconnect_settings_passwordpm_desc,
+			'title' => $lang->setting_mygpconnect_passwordpm,
+			'description' => $lang->setting_mygpconnect_passwordpm_desc,
 			'value' => '1'
 		),
 		'passwordpm_subject' => array(
-			'title' => $lang->mygpconnect_settings_passwordpm_subject,
-			'description' => $lang->mygpconnect_settings_passwordpm_subject_desc,
+			'title' => $lang->setting_mygpconnect_passwordpm_subject,
+			'description' => $lang->setting_mygpconnect_passwordpm_subject_desc,
 			'optionscode' => 'text',
 			'value' => $lang->mygpconnect_default_passwordpm_subject
 		),
 		'passwordpm_message' => array(
-			'title' => $lang->mygpconnect_settings_passwordpm_message,
-			'description' => $lang->mygpconnect_settings_passwordpm_message_desc,
+			'title' => $lang->setting_mygpconnect_passwordpm_message,
+			'description' => $lang->setting_mygpconnect_passwordpm_message_desc,
 			'optionscode' => 'textarea',
 			'value' => $lang->mygpconnect_default_passwordpm_message
 		),
 		'passwordpm_fromid' => array(
-			'title' => $lang->mygpconnect_settings_passwordpm_fromid,
-			'description' => $lang->mygpconnect_settings_passwordpm_fromid_desc,
+			'title' => $lang->setting_mygpconnect_passwordpm_fromid,
+			'description' => $lang->setting_mygpconnect_passwordpm_fromid_desc,
 			'optionscode' => 'text',
 			'value' => ''
 		),
 		
 		// Avatar and cover
 		'gpavatar' => array(
-			'title' => $lang->mygpconnect_settings_gpavatar,
-			'description' => $lang->mygpconnect_settings_gpavatar_desc,
+			'title' => $lang->setting_mygpconnect_gpavatar,
+			'description' => $lang->setting_mygpconnect_gpavatar_desc,
 			'value' => '1'
 		),
 		
 		// Birthday
 		'gpbday' => array(
-			'title' => $lang->mygpconnect_settings_gpbday,
-			'description' => $lang->mygpconnect_settings_gpbday_desc,
+			'title' => $lang->setting_mygpconnect_gpbday,
+			'description' => $lang->setting_mygpconnect_gpbday_desc,
 			'value' => '1'
 		),
 		
 		// Location
 		'gplocation' => array(
-			'title' => $lang->mygpconnect_settings_gplocation,
-			'description' => $lang->mygpconnect_settings_gplocation_desc,
+			'title' => $lang->setting_mygpconnect_gplocation,
+			'description' => $lang->setting_mygpconnect_gplocation_desc,
 			'value' => '1'
 		),
 		'gplocationfield' => array(
-			'title' => $lang->mygpconnect_settings_gplocationfield,
-			'description' => $lang->mygpconnect_settings_gplocationfield_desc,
+			'title' => $lang->setting_mygpconnect_gplocationfield,
+			'description' => $lang->setting_mygpconnect_gplocationfield_desc,
 			'optionscode' => 'text',
 			'value' => '1'
 		),
 		
 		// Bio
 		'gpbio' => array(
-			'title' => $lang->mygpconnect_settings_gpbio,
-			'description' => $lang->mygpconnect_settings_gpbio_desc,
+			'title' => $lang->setting_mygpconnect_gpbio,
+			'description' => $lang->setting_mygpconnect_gpbio_desc,
 			'value' => '1'
 		),
 		'gpbiofield' => array(
-			'title' => $lang->mygpconnect_settings_gpbiofield,
-			'description' => $lang->mygpconnect_settings_gpbiofield_desc,
+			'title' => $lang->setting_mygpconnect_gpbiofield,
+			'description' => $lang->setting_mygpconnect_gpbiofield_desc,
 			'optionscode' => 'text',
 			'value' => '2'
 		),
 		
 		// Name and last name
 		'gpdetails' => array(
-			'title' => $lang->mygpconnect_settings_gpdetails,
-			'description' => $lang->mygpconnect_settings_gpdetails_desc,
+			'title' => $lang->setting_mygpconnect_gpdetails,
+			'description' => $lang->setting_mygpconnect_gpdetails_desc,
 			'value' => '0'
 		),
 		'gpdetailsfield' => array(
-			'title' => $lang->mygpconnect_settings_gpdetailsfield,
-			'description' => $lang->mygpconnect_settings_gpdetailsfield_desc,
+			'title' => $lang->setting_mygpconnect_gpdetailsfield,
+			'description' => $lang->setting_mygpconnect_gpdetailsfield_desc,
 			'optionscode' => 'text',
 			'value' => ''
 		),
 		
 		// Sex
 		'gpsex' => array(
-			'title' => $lang->mygpconnect_settings_gpsex,
-			'description' => $lang->mygpconnect_settings_gpsex_desc,
+			'title' => $lang->setting_mygpconnect_gpsex,
+			'description' => $lang->setting_mygpconnect_gpsex_desc,
 			'value' => '0'
 		),
 		'gpsexfield' => array(
-			'title' => $lang->mygpconnect_settings_gpsexfield,
-			'description' => $lang->mygpconnect_settings_gpsexfield_desc,
+			'title' => $lang->setting_mygpconnect_gpsexfield,
+			'description' => $lang->setting_mygpconnect_gpsexfield_desc,
 			'optionscode' => 'text',
 			'value' => '3'
 		)
@@ -482,8 +482,8 @@ function mygpconnect_usercp()
 				
 			}
 			
-			$text = $lang->mygpconnect_settings_whattosync;
-			$unlink = "<input type=\"submit\" class=\"button\" name=\"unlink\" value=\"{$lang->mygpconnect_settings_unlink}\" />";
+			$text = $lang->setting_mygpconnect_whattosync;
+			$unlink = "<input type=\"submit\" class=\"button\" name=\"unlink\" value=\"{$lang->setting_mygpconnect_unlink}\" />";
 			
 			if ($userSettings) {
 			
@@ -506,12 +506,12 @@ function mygpconnect_usercp()
 				
 			}
 			else {
-				$text = $lang->mygpconnect_settings_connected;
+				$text = $lang->setting_mygpconnect_connected;
 			}
 			
 		} else {
 		
-			$text = $lang->mygpconnect_settings_linkaccount;
+			$text = $lang->setting_mygpconnect_linkaccount;
 			eval("\$options = \"" . $templates->get('mygpconnect_usercp_settings_linkprofile') . "\";");
 			
 		}
