@@ -5,7 +5,7 @@
  * @package MyGoogle+ Connect
  * @author  Shade <legend_k@live.it>
  * @license http://opensource.org/licenses/mit-license.php MIT license
- * @version 2.0
+ * @version 2.0.1
  */
 
 if (!defined('IN_MYBB')) {
@@ -24,7 +24,7 @@ function mygpconnect_info()
 		'website' => 'https://github.com/Shade-/MyGoogle+-Connect',
 		'author' => 'Shade',
 		'authorsite' => 'http://www.idevicelab.net/forum',
-		'version' => '2.0',
+		'version' => '2.0.1',
 		'compatibility' => '16*',
 		'guid' => 'cfcca7b3bd3317058eaec5d1b760c0fe'
 	);
