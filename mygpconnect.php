@@ -103,7 +103,7 @@ if ($mybb->input['action'] == 'register') {
 	if ($mybb->request_method == "post") {
 	
 		$newuser = array();
-		$newuser['name'] = $mybb->input['username'];
+		$newuser['displayName'] = $mybb->input['username'];
 		$newuser['email'] = $mybb->input['email'];
 		
 		$settingsToAdd = array();

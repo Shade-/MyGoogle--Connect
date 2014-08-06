@@ -270,7 +270,6 @@ class MyGoogle
 			"email" => $email,
 			"email2" => $email,
 			"usergroup" => (int) $mybb->settings['mygpconnect_usergroup'],
-			"displaygroup" => (int) $mybb->settings['mygpconnect_usergroup'],
 			"regip" => $session->ipaddress,
 			"longregip" => my_ip2long($session->ipaddress),
 			"options" => array(
