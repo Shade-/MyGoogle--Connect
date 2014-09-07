@@ -5,7 +5,7 @@
  * @package MyGoogle+ Connect
  * @author  Shade <legend_k@live.it>
  * @license http://opensource.org/licenses/mit-license.php MIT license
- * @version 2.0.1
+ * @version 2.1
  */
 
 if (!defined('IN_MYBB')) {
@@ -23,9 +23,9 @@ function mygpconnect_info()
 		'description' => 'Integrates MyBB with Google+, featuring login and registration.',
 		'website' => 'https://github.com/Shade-/MyGoogle+-Connect',
 		'author' => 'Shade',
-		'authorsite' => 'http://www.idevicelab.net/forum',
-		'version' => '2.0.1',
-		'compatibility' => '16*',
+		'authorsite' => '',
+		'version' => '2.1',
+		'compatibility' => '16*,17*,18*',
 		'guid' => 'cfcca7b3bd3317058eaec5d1b760c0fe'
 	);
 }
@@ -538,24 +538,62 @@ function mygpconnect_update()
 function mygpconnect_settings_footer()
 {
 	global $mybb, $db;
+	
 	if ($mybb->input["action"] == "change" and $mybb->request_method != "post") {
+	
 		$gid = mygpconnect_settings_gid();
+		
 		if ($mybb->input["gid"] == $gid or !$mybb->input['gid']) {
-			echo '<script type="text/javascript">
-Event.observe(window, "load", function() {
-	loadMyGPConnectPeekers();
-});
-function loadMyGPConnectPeekers()
-{
-	new Peeker($$(".setting_mygpconnect_passwordpm"), $("row_setting_mygpconnect_passwordpm_subject"), /1/, true);
-	new Peeker($$(".setting_mygpconnect_passwordpm"), $("row_setting_mygpconnect_passwordpm_message"), /1/, true);
-	new Peeker($$(".setting_mygpconnect_passwordpm"), $("row_setting_mygpconnect_passwordpm_fromid"), /1/, true);
-	new Peeker($$(".setting_mygpconnect_gpbio"), $("row_setting_mygpconnect_gpbiofield"), /1/, true);
-	new Peeker($$(".setting_mygpconnect_gplocation"), $("row_setting_mygpconnect_gplocationfield"), /1/, true);
-	new Peeker($$(".setting_mygpconnect_gpdetails"), $("row_setting_mygpconnect_gpdetailsfield"), /1/, true);
-	new Peeker($$(".setting_mygpconnect_gpsex"), $("row_setting_mygpconnect_gpsexfield"), /1/, true);
-}
-</script>';
+		
+			// 1.8 has jQuery, not Prototype
+			if ($mybb->version_code >= 1700) {
+				echo '<script type="text/javascript">
+	$(document).ready(function() {
+		loadMyGPConnectPeekers();
+		loadStars();
+	});
+	function loadMyGPConnectPeekers()
+	{
+		new Peeker($(".setting_mygpconnect_passwordpm"), $("#row_setting_mygpconnect_passwordpm_subject"), /1/, true);
+		new Peeker($(".setting_mygpconnect_passwordpm"), $("#row_setting_mygpconnect_passwordpm_message"), /1/, true);
+		new Peeker($(".setting_mygpconnect_passwordpm"), $("#row_setting_mygpconnect_passwordpm_fromid"), /1/, true);
+		new Peeker($(".setting_mygpconnect_gpbio"), $("#row_setting_mygpconnect_gpbiofield"), /1/, true);
+		new Peeker($(".setting_mygpconnect_gplocation"), $("#row_setting_mygpconnect_gplocationfield"), /1/, true);
+		new Peeker($(".setting_mygpconnect_gpdetails"), $(" #row_setting_mygpconnect_gpdetailsfield"), /1/, true);
+		new Peeker($(".setting_mygpconnect_gpsex"), $("#row_setting_mygpconnect_gpsexfield"), /1/, true);
+	}
+	function loadStars()
+	{
+		add_star("row_setting_mygpconnect_clientid");
+		add_star("row_setting_mygpconnect_clientsecret");
+		add_star("row_setting_mygpconnect_apikey");
+	}
+	</script>';
+			}
+			else {
+				echo '<script type="text/javascript">
+	Event.observe(window, "load", function() {
+		loadMyGPConnectPeekers();
+		loadStars();
+	});
+	function loadMyGPConnectPeekers()
+	{
+		new Peeker($$(".setting_mygpconnect_passwordpm"), $("row_setting_mygpconnect_passwordpm_subject"), /1/, true);
+		new Peeker($$(".setting_mygpconnect_passwordpm"), $("row_setting_mygpconnect_passwordpm_message"), /1/, true);
+		new Peeker($$(".setting_mygpconnect_passwordpm"), $("row_setting_mygpconnect_passwordpm_fromid"), /1/, true);
+		new Peeker($$(".setting_mygpconnect_gpbio"), $("row_setting_mygpconnect_gpbiofield"), /1/, true);
+		new Peeker($$(".setting_mygpconnect_gplocation"), $("row_setting_mygpconnect_gplocationfield"), /1/, true);
+		new Peeker($$(".setting_mygpconnect_gpdetails"), $("row_setting_mygpconnect_gpdetailsfield"), /1/, true);
+		new Peeker($$(".setting_mygpconnect_gpsex"), $("row_setting_mygpconnect_gpsexfield"), /1/, true);
+	}
+	function loadStars()
+	{
+		add_star("row_setting_mygpconnect_clientid");
+		add_star("row_setting_mygpconnect_clientsecret");
+		add_star("row_setting_mygpconnect_apikey");
+	}
+	</script>';
+			}
 		}
 	}
 }
