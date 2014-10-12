@@ -261,7 +261,9 @@ function mygpconnect_uninstall()
 	
 }
 
-if ($settings['mygpconnect_enabled']) {
+global $mybb;
+
+if ($mybb->settings['mygpconnect_enabled']) {
 	
 	// Global
 	$plugins->add_hook('global_start', 'mygpconnect_global');
