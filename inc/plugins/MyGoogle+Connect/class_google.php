@@ -4,7 +4,7 @@
  * A bridge between MyBB with Google, featuring login, registration and more.
  *
  * @package Main API class
- * @version 2.0
+ * @version 2.2
  */
 
 class MyGoogle
@@ -62,15 +62,15 @@ class MyGoogle
 		
 		try {
 		
-			require_once MYBB_ROOT . "mygpconnect/src/Google_Client.php";
-			require_once MYBB_ROOT . "mygpconnect/src/contrib/Google_PlusService.php";
+			require_once MYBB_ROOT . "mygpconnect/src/autoload.php";
+			require_once MYBB_ROOT . "mygpconnect/src/Service/Plus.php";
 			
 			if ($mybb->settings['mygpconnect_emailcheck']) {
-				require_once MYBB_ROOT . "mygpconnect/src/contrib/Google_Oauth2Service.php";
+				require_once MYBB_ROOT . "mygpconnect/src/Service/Oauth2.php";
 			}
 		}
 		catch (Exception $e) {
-			error($lang->sprintf($lang->mygpconnect_error_report, $e->getMessage()));
+			$this->generate_report($e);
 		}
 		
 		$this->google = new Google_Client();
@@ -78,14 +78,13 @@ class MyGoogle
 		$this->google->setClientId($this->id);
 		$this->google->setClientSecret($this->secret);
 		$this->google->setDeveloperKey($this->key);
-		$this->google->setApprovalPrompt('auto');
 		$this->google->setScopes(array('https://www.googleapis.com/auth/plus.login', 'https://www.googleapis.com/auth/userinfo.email'));
 		
 		if ($mybb->settings['mygpconnect_emailcheck']) {
-			$this->oauth = new Google_Oauth2Service($this->google);
+			$this->oauth = new Google_Service_Oauth2($this->google);
 		}
 		
-		$this->plus = new Google_PlusService($this->google);
+		$this->plus = new Google_Service_Plus($this->google);
 		
 		return true;
 	}
@@ -124,13 +123,17 @@ class MyGoogle
 	 */
 	public function obtain_tokens()
 	{
-		global $lang;
+		global $mybb, $lang;
+		
+		if (!$mybb->input['code']) {
+			return false;
+		}
 		
 		try {
-			$this->google->authenticate();
+			$this->google->authenticate($mybb->input['code']);
 		}
 		catch (Exception $e) {
-			error($lang->sprintf($lang->mygpconnect_error_report, $e->getMessage()));
+			$this->generate_report($e);
 		}		
 		
 		$this->set_token();
@@ -180,7 +183,7 @@ class MyGoogle
 		
 		}
 		catch (Exception $e) {
-			error($lang->sprintf($lang->mygpconnect_error_report, $e->getMessage()));
+			$this->generate_report($e);
 		}
 		
 		if ($user) {
@@ -748,6 +751,29 @@ class MyGoogle
 		}
 		
 		redirect($url, $message, $title);
+		
+		return true;
+	}
+	
+	/**
+	 * Generates a bug report and inserts it into the database and shows an error to the user
+	 */
+	public function generate_report($e)
+	{
+		global $db, $lang;
+		
+		$report = array(
+			'dateline' => TIME_NOW,
+			'code' => (int) $e->getCode(),
+			'file' => $db->escape_string($e->getFile()),
+			'line' => (int) $e->getLine(),
+			'message' => $db->escape_string($e->getMessage()),
+			'trace' => $db->escape_string($e->getTraceAsString())
+		);
+		
+		$db->insert_query('mygpconnect_reports', $report);
+		
+		error($lang->mygpconnect_error_report_generated);
 		
 		return true;
 	}

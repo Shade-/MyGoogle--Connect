@@ -73,6 +73,25 @@ class MyGoogle_Update
 		$query = $db->simple_select("settinggroups", "gid", "name='mygpconnect'");
 		$gid   = (int) $db->fetch_field($query, "gid");
 		
+		// 2.2
+		if (version_compare($this->old_version, '2.2', "<")) {
+			
+			// Add the report table
+			if (!$db->table_exists('mygpconnect_reports')) {
+		        $collation = $db->build_create_table_collation();
+		        $db->write_query("CREATE TABLE ".TABLE_PREFIX."mygpconnect_reports(
+		            id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+		            dateline VARCHAR(15) NOT NULL,
+		            code VARCHAR(10) NOT NULL,
+		            file TEXT,
+		            line INT(6) NOT NULL,
+		            message TEXT,
+		            trace TEXT
+		            ) ENGINE=MyISAM{$collation};");
+		    }
+			
+		}
+		
 		// 2.0
 		if (version_compare($this->old_version, '2.0', "<")) {
 			
