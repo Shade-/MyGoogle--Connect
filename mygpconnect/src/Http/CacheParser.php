@@ -143,7 +143,7 @@ class Google_Http_CacheParser
     }
 
     $rawDate = $resp->getResponseHeader('date');
-    $parsedDate = strtotime($rawDate);
+    $parsedDate = strtotime(strtok($rawDate, "\n"));
 
     if (empty($rawDate) || false == $parsedDate) {
       // We can't default this to now, as that means future cache reads

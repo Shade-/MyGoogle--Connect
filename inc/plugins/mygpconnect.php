@@ -542,6 +542,7 @@ function mygpconnect_update()
 {
 	global $mybb, $db, $cache, $lang;
 	
+	// Download report
 	if ($mybb->input['export_id'] and $mybb->input['gid'] == mygpconnect_settings_gid()) {
 	
 		$plugin_info = mygpconnect_info();
@@ -591,7 +592,7 @@ function mygpconnect_settings_footer()
 		
 		if ($mybb->input['gid'] == $gid) {
 		
-			// Deleting all reports
+			// Delete reports
 			if ($mybb->input['delete_report']) {
 				
 				switch ($mybb->input['delete_report']) {
@@ -601,6 +602,9 @@ function mygpconnect_settings_footer()
 					default:
 						$db->delete_query('mygpconnect_reports', 'id = ' . (int) $mybb->input['delete_report']);
 				}
+				
+				flash_message($lang->mygpconnect_success_deleted_reports, 'success');
+				admin_redirect('index.php?module=config-settings&action=change&gid=' . $gid);
 				
 			}
 			
@@ -613,17 +617,17 @@ function mygpconnect_settings_footer()
 			if ($reports) {
 			
 				$table = new Table;
-				$table->construct_header('Date', array(
+				$table->construct_header($lang->mygpconnect_reports_date, array(
 					'width' => '15%'
 				));
-				$table->construct_header('Code', array(
+				$table->construct_header($lang->mygpconnect_reports_code, array(
 					'width' => '5%'
 				));
-				$table->construct_header('File');
-				$table->construct_header('Line', array(
+				$table->construct_header($lang->mygpconnect_reports_file);
+				$table->construct_header($lang->mygpconnect_reports_line, array(
 					'width' => '5%'
 				));
-				$table->construct_header('Export', array(
+				$table->construct_header($lang->options, array(
 					'width' => '10%',
 					'style' => 'text-align: center'
 				));
@@ -644,7 +648,11 @@ function mygpconnect_settings_footer()
 						
 					}
 					
-					$table->construct_cell('<a href="index.php?module=config-settings&action=change&gid=' . $gid . '&export_id=' . $report['id'] . '" class="button">Export</a>', array(
+					$popup = new PopupMenu("item_{$report['id']}", $lang->options);
+					$popup->add_item($lang->mygpconnect_reports_download, 'index.php?module=config-settings&action=change&gid=' . $gid . '&export_id=' . $report['id']);
+					$popup->add_item($lang->mygpconnect_reports_delete, 'index.php?module=config-settings&action=change&gid=' . $gid . '&delete_report=' . $report['id']);
+					
+					$table->construct_cell($popup->fetch(), array(
 						'class' => 'align_center'
 					));
 					
@@ -652,7 +660,14 @@ function mygpconnect_settings_footer()
 					
 				}
 				
-				$table->output('Bug reports');
+				$table->construct_cell('<a href="index.php?module=config-settings&action=change&gid=' . $gid . '&delete_report=' . $report['id'] . '" class="button">' . $lang->mygpconnect_reports_delete_all . '</a>', array(
+					'colspan' => 5,
+					'class' => 'align_center'
+					
+				));
+				$table->construct_row();
+				
+				$table->output($lang->mygpconnect_reports);
 				
 			}
 			

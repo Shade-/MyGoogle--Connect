@@ -11,7 +11,7 @@ $l['mygpconnect_redirect_title'] = "Welcome, {1}!";
 // Errors
 $l['mygpconnect_error_noconfigfound'] = "You haven't configured MyGoogle+ Connect plugin yet: either your Google+ Client ID, your Google+ Client Secret or your Google+ API Key are missing. If you are an administrator, please read the instructions provided in the documentation.";
 $l['mygpconnect_error_noauth'] = "You didn't let us login with your Google+ account. Please authorize our application from your Google+ Application manager if you would like to login into our Forum.";
-$l['mygpconnect_error_report'] = "An unknown error occurred. An error report has been:<br>
+$l['mygpconnect_error_report'] = "An unknown error occurred, but a bug report has <b>not</b> been generated. Here is the output:<br>
 <pre>{1}</pre><br>
 Please report this error to an administrator and try again.";
 $l['mygpconnect_error_report_generated'] = "An error occurred trying to accomplish your request. A bug report has been generated and it's available in the administration panel. If you are not an administrator, contact one as soon as possible and tell him you have landed on this page. You may also try logging in with Google+ once again and see if it was just a temporary error. Sorry for the inconvenience.";

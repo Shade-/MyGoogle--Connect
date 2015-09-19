@@ -65,9 +65,20 @@ Your password is: [b]{password}[/b]
 With regards,
 our Team";
 
+// Bug reports
+$l['mygpconnect_reports'] = "Bug reports";
+$l['mygpconnect_reports_date'] = "Date";
+$l['mygpconnect_reports_line'] = "Line";
+$l['mygpconnect_reports_file'] = "File";
+$l['mygpconnect_reports_code'] = "Code";
+$l['mygpconnect_reports_export'] = "Export";
+$l['mygpconnect_reports_delete'] = "Delete";
+$l['mygpconnect_reports_delete_all'] = "Delete all reports";
+
 // Errors
 $l['mygpconnect_error_needtoupdate'] = "You seem to have currently installed an outdated version of MyGoogle+ Connect. Please <a href=\"index.php?module=config-settings&update=mygpconnect\">click here</a> to run the upgrade script.";
 $l['mygpconnect_error_nothingtodohere'] = "Ooops, MyGoogle+ Connect is already up-to-date! Nothing to do here...";
 
 // Success
 $l['mygpconnect_success_updated'] = "MyGoogle+ Connect has been updated correctly from version {1} to {2}. Good job!";
+$l['mygpconnect_success_deleted_reports'] = "The bug report(s) has been deleted successfully.";
