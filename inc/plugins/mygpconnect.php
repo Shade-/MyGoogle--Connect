@@ -5,7 +5,7 @@
  * @package MyGoogle+ Connect
  * @author  Shade <legend_k@live.it>
  * @license http://opensource.org/licenses/mit-license.php MIT license
- * @version 2.1
+ * @version 2.2
  */
 
 if (!defined('IN_MYBB')) {
@@ -24,7 +24,7 @@ function mygpconnect_info()
 		'website' => 'https://github.com/Shade-/MyGoogle+-Connect',
 		'author' => 'Shade',
 		'authorsite' => '',
-		'version' => '2.1',
+		'version' => '2.2',
 		'compatibility' => '16*,17*,18*',
 		'guid' => 'cfcca7b3bd3317058eaec5d1b760c0fe'
 	);
@@ -191,14 +191,28 @@ function mygpconnect_install()
 	
 	// Insert our Google+ columns into the database
 	$db->query("ALTER TABLE " . TABLE_PREFIX . "users ADD (
-		`gpavatar` int(1) NOT NULL DEFAULT 1,
-		`gpbday` int(1) NOT NULL DEFAULT 1,
-		`gpsex` int(1) NOT NULL DEFAULT 1,
-		`gpdetails` int(1) NOT NULL DEFAULT 1,
-		`gpbio` int(1) NOT NULL DEFAULT 1,
-		`gplocation` int(1) NOT NULL DEFAULT 1,
-		`mygp_uid` varchar(30) NOT NULL DEFAULT 0
+		`gpavatar` INT(1) NOT NULL DEFAULT 1,
+		`gpbday` INT(1) NOT NULL DEFAULT 1,
+		`gpsex` INT(1) NOT NULL DEFAULT 1,
+		`gpdetails` INT(1) NOT NULL DEFAULT 1,
+		`gpbio` INT(1) NOT NULL DEFAULT 1,
+		`gplocation` INT(1) NOT NULL DEFAULT 1,
+		`mygp_uid` VARCHAR(30) NOT NULL DEFAULT 0
 		)");
+		
+	// Add the report table
+	if (!$db->table_exists('mygpconnect_reports')) {
+        $collation = $db->build_create_table_collation();
+        $db->write_query("CREATE TABLE ".TABLE_PREFIX."mygpconnect_reports(
+            id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+            dateline VARCHAR(15) NOT NULL,
+            code VARCHAR(10) NOT NULL,
+            file TEXT,
+            line INT(6) NOT NULL,
+            message TEXT,
+            trace TEXT
+            ) ENGINE=MyISAM{$collation};");
+    }
 		
 	// Insert our templates   
 	$dir = new DirectoryIterator(dirname(__FILE__) . '/MyGoogle+Connect/templates');
@@ -246,6 +260,7 @@ function mygpconnect_uninstall()
 	
 	// Delete our columns
 	$db->query("ALTER TABLE " . TABLE_PREFIX . "users DROP `gpavatar`, DROP `gpbday`, DROP `gpdetails`, DROP `gpsex`, DROP `gpbio`, DROP `gplocation`, DROP `mygp_uid`");
+	$db->drop_table('mygpconnect_reports');
 	
 	// Delete the plugin from cache
 	$info = mygpconnect_info();
@@ -485,7 +500,7 @@ function mygpconnect_usercp()
 			}
 			
 			$text = $lang->setting_mygpconnect_whattosync;
-			$unlink = "<input type=\"submit\" class=\"button\" name=\"unlink\" value=\"{$lang->setting_mygpconnect_unlink}\" />";
+			$unlink = "<input type=\"submit\" class=\"button\" name=\"unlink\" value=\"{$lang->mygpconnect_settings_unlink}\" />";
 			
 			if ($userSettings) {
 			
@@ -527,6 +542,35 @@ function mygpconnect_update()
 {
 	global $mybb, $db, $cache, $lang;
 	
+	if ($mybb->input['export_id'] and $mybb->input['gid'] == mygpconnect_settings_gid()) {
+	
+		$plugin_info = mygpconnect_info();
+	
+		$xml = "<?xml version=\"1.0\" encoding=\"{$lang->settings['charset']}\"?".">\r\n";
+		$xml .= "<report name=\"".$plugin_info['name']."\" version=\"".$plugin_info['version']."\">\r\n";
+		
+		$query = $db->simple_select('mygpconnect_reports', '*', 'id = ' . (int) $mybb->input['export_id']);
+		while ($report = $db->fetch_array($query)) {
+			
+			foreach ($report as $k => $v) {
+				
+				$xml .= "\t\t<{$k}>{$v}</{$k}>\r\n";
+				
+			}
+			
+		}
+		$xml .= "</report>";
+		
+		header("Content-disposition: attachment; filename=" . $plugin_info['name'] . "-report-" . $mybb->input['export_id'] . ".xml");
+		header("Content-type: application/octet-stream");
+		header("Content-Length: ".strlen($xml));
+		header("Pragma: no-cache");
+		header("Expires: 0");
+		echo $xml;
+		
+		exit;
+	}
+	
 	$file = MYBB_ROOT . "inc/plugins/MyGoogle+Connect/class_update.php";
 	
 	if (file_exists($file)) {
@@ -539,11 +583,80 @@ function mygpconnect_update()
  **/
 function mygpconnect_settings_footer()
 {
-	global $mybb, $db;
+	global $mybb, $db, $lang;
 	
 	if ($mybb->input["action"] == "change" and $mybb->request_method != "post") {
 	
 		$gid = mygpconnect_settings_gid();
+		
+		if ($mybb->input['gid'] == $gid) {
+		
+			// Deleting all reports
+			if ($mybb->input['delete_report']) {
+				
+				switch ($mybb->input['delete_report']) {
+					case 'all':
+						$db->delete_query('mygpconnect_reports');
+						break;
+					default:
+						$db->delete_query('mygpconnect_reports', 'id = ' . (int) $mybb->input['delete_report']);
+				}
+				
+			}
+			
+			$reports = array();
+			$query = $db->simple_select('mygpconnect_reports');
+			while ($report = $db->fetch_array($query)) {
+				$reports[] = $report;
+			}
+			
+			if ($reports) {
+			
+				$table = new Table;
+				$table->construct_header('Date', array(
+					'width' => '15%'
+				));
+				$table->construct_header('Code', array(
+					'width' => '5%'
+				));
+				$table->construct_header('File');
+				$table->construct_header('Line', array(
+					'width' => '5%'
+				));
+				$table->construct_header('Export', array(
+					'width' => '10%',
+					'style' => 'text-align: center'
+				));
+				
+				foreach ($reports as $report) {
+				
+					foreach ($report as $k => $val) {
+					
+						if (in_array($k, array('id', 'message', 'trace'))) {
+							continue;
+						}
+						
+						if ($k == 'dateline') {
+							$val = my_date($mybb->settings['dateformat'], $val) . ', ' . my_date($mybb->settings['timeformat'], $val);
+						}
+						
+						$table->construct_cell($val);
+						
+					}
+					
+					$table->construct_cell('<a href="index.php?module=config-settings&action=change&gid=' . $gid . '&export_id=' . $report['id'] . '" class="button">Export</a>', array(
+						'class' => 'align_center'
+					));
+					
+					$table->construct_row();
+					
+				}
+				
+				$table->output('Bug reports');
+				
+			}
+			
+		}
 		
 		if ($mybb->input["gid"] == $gid or !$mybb->input['gid']) {
 		
@@ -704,20 +817,27 @@ function mygpconnect_settings_saver()
 function mygpconnect_settings_replacer($args)
 {
 	global $db, $lang, $form, $mybb, $page, $replace_custom_fields;
-
+	static $profilefields, $pf_done;
+	
 	if ($page->active_action != "settings" and $mybb->input['action'] != "change" and $mybb->input['gid'] != mygpconnect_settings_gid()) {
 		return false;
 	}
-        
-	$query = $db->simple_select('profilefields', 'name, fid');
 	
-	$profilefields = array('' => '');
+	if (!$pf_done) {
+		
+		$query = $db->simple_select('profilefields', 'name, fid');
 	
-	while ($field = $db->fetch_array($query)) {
-		$profilefields[$field['fid']] = $field['name'];
+		$profilefields = array();
+		
+		while ($field = $db->fetch_array($query)) {
+			$profilefields[$field['fid']] = $field['name'];
+		}
+		$db->free_result($query);
+		
+		$pf_done = true;
+		
 	}
-	$db->free_result($query);
-	
+
 	foreach ($replace_custom_fields as $setting) {
 	
 		if ($args['row_options']['id'] == "row_setting_mygpconnect_".$setting) {
