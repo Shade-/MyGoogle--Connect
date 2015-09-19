@@ -2,10 +2,9 @@
 
 MyGoogle+ Connect is the ultimate solution for MyBB <-> Google+ bridging, featuring smooth login and registration.
 
-> **Version** 2.1  
+> **Version** 2.2  
 > **Dependencies** [PluginLibrary](http://mods.mybb.com/view/PluginLibrary), PHP cURL, Server-to-server connections support  
 > **Author** Shade  
-> **In development** 2.2  
 
 ### Info
 
@@ -17,7 +16,7 @@ Existing users can link their accounts to Google+ in order to use the login func
 
 The official documentation can be found [here](http://github.com/Shade-/MyGoogle--Connect/wiki).
 
-MyGoogle+ Connect is based upon Google+ PHP API 0.6.6 and it's free as in freedom.
+MyGoogle+ Connect is based upon Google+ PHP API 1.1.4 and it's free as in freedom.
 
 ### Bug reports
 
