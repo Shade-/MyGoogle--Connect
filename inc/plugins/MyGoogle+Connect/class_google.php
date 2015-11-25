@@ -764,7 +764,7 @@ class MyGoogle
 			$url = "index.php";
 		}
 		
-		if ($url and strpos($url, "myfbconnect.php") === false) {
+		if ($url and strpos($url, "mygpconnect.php") === false) {
 			$url = htmlspecialchars_uni($url);
 		}
 		else {
