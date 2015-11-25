@@ -735,15 +735,36 @@ class MyGoogle
 	}
 	
 	/**
+	 * Remembers the page where the plugin should redirect to once finishing authenticating
+	 */
+	public function remember_page()
+	{
+		if (!session_id()) {
+			session_start();
+		}
+		
+		$_SESSION['mygpconnect']['return_to_page'] = $_SERVER['HTTP_REFERER'];
+		
+		return true;
+	}
+	
+	/**
 	 * Redirects the user to the page he came from
 	 */
 	public function redirect($url = '', $title = '', $message = '')
 	{
-		if (!$url) {
-			$url = $_SERVER['HTTP_REFERER'];
+		if (!session_id()) {
+			session_start();
 		}
 		
-		if (!strpos($url, "action=login") and !strpos($url, "action=do_login") and !strpos($url, "action=register")) {
+		if (!$url and $_SESSION['mygpconnect']['return_to_page']) {
+			$url = $_SESSION['mygpconnect']['return_to_page'];
+		}
+		else {
+			$url = "index.php";
+		}
+		
+		if ($url and strpos($url, "mygpconnect.php") === false) {
 			$url = htmlspecialchars_uni($url);
 		}
 		else {

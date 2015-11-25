@@ -46,6 +46,8 @@ if ($mybb->input['action'] == 'login') {
 		error($lang->mygpconnect_error_alreadyloggedin);
 	}
 	
+	// Remember page to ensure we redirect to the previous page after the user logs in
+	$GoogleConnect->remember_page();
 	$GoogleConnect->authenticate();	
 	
 }
